@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLAWLESS AI — Commercial Loan Broker Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--neon:#00ff88;--bg:#050d08;--text:#e8fff4;--neon-dim:rgba(0,255,136,.15);--neon-mid:rgba(0,255,136,.35);--neon-glow:0 0 8px rgba(0,255,136,.6),0 0 20px rgba(0,255,136,.3);--neon-glow-strong:0 0 12px rgba(0,255,136,.8),0 0 30px rgba(0,255,136,.5),0 0 60px rgba(0,255,136,.2)}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Share Tech Mono',monospace}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);pointer-events:none;z-index:9999;animation:scanMove 8s linear infinite}
+@keyframes scanMove{0%{background-position:0 0}100%{background-position:0 100px}}
+.app{display:flex;width:100%;height:100%;position:relative;z-index:1}
+.side-panel{width:240px;flex-shrink:0;padding:16px 14px;display:flex;flex-direction:column;gap:12px;border-right:1px dashed rgba(0,255,136,.15);overflow-y:auto}
+.side-panel.right{border-right:none;border-left:1px dashed rgba(0,255,136,.15)}
+.main{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.corner{position:fixed;width:28px;height:28px;z-index:10}
+.corner::before,.corner::after{content:'';position:absolute;background:var(--neon)}
+.corner-tl{top:8px;left:8px}.corner-tl::before{top:0;left:0;width:28px;height:2px}.corner-tl::after{top:0;left:0;width:2px;height:28px}
+.corner-tr{top:8px;right:8px}.corner-tr::before{top:0;right:0;width:28px;height:2px}.corner-tr::after{top:0;right:0;width:2px;height:28px}
+.corner-bl{bottom:8px;left:8px}.corner-bl::before{bottom:0;left:0;width:28px;height:2px}.corner-bl::after{bottom:0;left:0;width:2px;height:28px}
+.corner-br{bottom:8px;right:8px}.corner-br::before{bottom:0;right:0;width:28px;height:2px}.corner-br::after{bottom:0;right:0;width:2px;height:28px}
+.panel-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--neon);text-transform:uppercase;border-bottom:1px solid rgba(0,255,136,.2);padding-bottom:6px;margin-bottom:4px}
+.rate-card{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.1);border-radius:4px;padding:10px 12px}
+.rate-label{font-size:9px;letter-spacing:1.5px;color:rgba(232,255,244,.5);text-transform:uppercase}
+.rate-value{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:var(--neon);text-shadow:var(--neon-glow);margin:4px 0 2px}
+.rate-change{font-size:10px}.rate-change.up{color:#00ff88}.rate-change.down{color:#ff4466}
+.rate-meta{font-size:8px;color:rgba(232,255,244,.3);margin-top:4px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(0,255,136,.06)}
+.stat-label{font-size:10px;color:rgba(232,255,244,.5)}
+.stat-value{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:600;color:var(--neon)}
+.stat-bar{width:100%;height:4px;background:rgba(0,255,136,.08);border-radius:2px;margin-top:4px;overflow:hidden}
+.stat-bar-fill{height:100%;background:var(--neon);border-radius:2px;box-shadow:var(--neon-glow);transition:width .6s ease}
+.mini-label{font-size:8px;color:rgba(232,255,244,.3);letter-spacing:1px;text-transform:uppercase;margin-top:8px}
+.alert-item{font-size:10px;padding:6px 8px;background:rgba(255,68,102,.06);border-left:2px solid #ff4466;margin-bottom:4px;border-radius:0 3px 3px 0;color:rgba(232,255,244,.7)}
+.alert-item.green{background:rgba(0,255,136,.06);border-left-color:var(--neon)}
+.radial-container{position:relative;width:620px;height:620px}
+.svg-connectors{position:absolute;inset:0;z-index:1}
+.svg-connectors line{stroke:var(--neon);stroke-width:1;stroke-dasharray:6 4;opacity:.25;transition:opacity .3s,stroke-width .3s}
+.svg-connectors line.active{opacity:.7;stroke-width:1.5}
+.ring-outer{position:absolute;top:50%;left:50%;width:440px;height:440px;transform:translate(-50%,-50%);border:1px dashed rgba(0,255,136,.12);border-radius:50%;animation:ringRotate 60s linear infinite;z-index:1}
+.ring-inner{position:absolute;top:50%;left:50%;width:340px;height:340px;transform:translate(-50%,-50%);border:1px dashed rgba(0,255,136,.08);border-radius:50%;animation:ringRotate 45s linear infinite reverse;z-index:1}
+.ring-dots{position:absolute;top:50%;left:50%;width:480px;height:480px;transform:translate(-50%,-50%);border-radius:50%;animation:ringRotate 90s linear infinite;z-index:1}
+.ring-dot{position:absolute;width:3px;height:3px;background:var(--neon);border-radius:50%;opacity:.3}
+@keyframes ringRotate{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.center-hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:130px;height:130px;z-index:5;cursor:pointer}
+.hub-bg{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(0,255,136,.12) 0%,rgba(0,255,136,.03) 60%,transparent 100%);border:2px solid rgba(0,255,136,.4);animation:hubPulse 3s ease-in-out infinite;transition:border-color .3s,box-shadow .3s}
+.hub-bg::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,255,136,.12);animation:hubPulse 3s ease-in-out infinite .5s}
+.center-hub:hover .hub-bg{border-color:var(--neon);box-shadow:var(--neon-glow-strong)}
+@keyframes hubPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.04)}}
+.hub-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.hub-label{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;color:var(--neon);text-shadow:var(--neon-glow)}
+.hub-sub{font-size:7px;color:rgba(232,255,244,.4);letter-spacing:1.5px;margin-top:3px}
+.menu-node{position:absolute;z-index:4;width:110px;display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;transition:transform .25s ease,filter .25s ease;transform:translate(-50%,-50%)}
+.menu-node:hover{transform:translate(-50%,-50%) scale(1.12);filter:drop-shadow(0 0 12px rgba(0,255,136,.5))}
+.menu-node:hover .node-icon{border-color:var(--neon);background:rgba(0,255,136,.15);box-shadow:var(--neon-glow-strong)}
+.menu-node:hover .node-label{color:var(--neon);text-shadow:var(--neon-glow)}
+.node-icon{width:56px;height:56px;border-radius:50%;border:2px solid rgba(0,255,136,.3);background:rgba(0,255,136,.05);display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .3s ease;box-shadow:0 0 6px rgba(0,255,136,.15)}
+.node-label{font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;margin-top:6px;color:rgba(232,255,244,.8);text-transform:uppercase;transition:all .3s}
+.node-sub{font-size:7px;color:rgba(232,255,244,.3);margin-top:2px;letter-spacing:.5px}
+.node-code{font-size:7px;color:rgba(0,255,136,.35);margin-top:1px;letter-spacing:1px}
+.footer{position:fixed;bottom:0;left:0;right:0;height:32px;background:rgba(5,13,8,.9);border-top:1px solid rgba(0,255,136,.1);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:10;font-size:9px;letter-spacing:1px;color:rgba(232,255,244,.35)}
+.footer-clock{font-family:'Orbitron',sans-serif;color:var(--neon);font-weight:600;font-size:10px}
+.footer-status{display:flex;align-items:center;gap:6px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:var(--neon-glow);animation:statusBlink 2s ease-in-out infinite}
+@keyframes statusBlink{0%,100%{opacity:1}50%{opacity:.4}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg);border:1px solid rgba(0,255,136,.3);border-radius:8px;width:520px;max-height:80vh;overflow-y:auto;position:relative;box-shadow:var(--neon-glow-strong),0 20px 60px rgba(0,0,0,.6)}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid rgba(0,255,136,.1);display:flex;align-items:center;gap:14px}
+.modal-icon{width:44px;height:44px;border-radius:50%;border:2px solid var(--neon);background:rgba(0,255,136,.1);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--neon-glow)}
+.modal-title-block{flex:1}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--neon);text-shadow:var(--neon-glow);letter-spacing:1px}
+.modal-code{font-size:9px;color:rgba(232,255,244,.35);letter-spacing:1.5px;margin-top:2px}
+.modal-close{width:32px;height:32px;border:1px solid rgba(0,255,136,.2);border-radius:4px;background:transparent;color:var(--neon);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:rgba(0,255,136,.1);border-color:var(--neon);box-shadow:var(--neon-glow)}
+.modal-body{padding:20px 24px}
+.modal-desc{font-size:12px;line-height:1.7;color:rgba(232,255,244,.65);margin-bottom:16px}
+.modal-section-title{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(0,255,136,.6);text-transform:uppercase;margin-bottom:8px}
+.modal-features{list-style:none;margin-bottom:20px}
+.modal-features li{font-size:11px;padding:6px 0;border-bottom:1px solid rgba(0,255,136,.05);color:rgba(232,255,244,.6);display:flex;align-items:center;gap:8px}
+.modal-features li::before{content:'\203A';color:var(--neon);font-weight:700;font-size:14px}
+.modal-actions{display:flex;gap:10px;margin-top:16px}
+.modal-btn{flex:1;padding:10px 16px;border-radius:4px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.modal-btn.primary{background:var(--neon);color:var(--bg);border:none;box-shadow:var(--neon-glow)}
+.modal-btn.primary:hover{box-shadow:var(--neon-glow-strong);transform:translateY(-1px)}
+.modal-btn.secondary{background:transparent;color:var(--neon);border:1px solid rgba(0,255,136,.3)}
+.modal-btn.secondary:hover{border-color:var(--neon);background:rgba(0,255,136,.05)}
+.modal-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.modal-metric{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.08);border-radius:4px;padding:8px;text-align:center}
+.modal-metric-val{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--neon)}
+.modal-metric-label{font-size:8px;color:rgba(232,255,244,.4);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+@media(max-width:1100px){.side-panel{width:200px}}
+@media(max-width:900px){.side-panel{display:none}.radial-container{width:500px;height:500px}}
+</style>
+</head>
+<body>
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+<div class="app">
+<div class="side-panel" id="leftPanel">
+<div class="panel-title">Live Market Rates</div>
+<div class="rate-card"><div class="rate-label">SOFR (30-Day Avg)</div><div class="rate-value" id="sofrRate">5.33%</div><div class="rate-change up" id="sofrChange">&#9650; +2 bps</div><div class="rate-meta">Updated: <span id="sofrTime">--:--</span> UTC</div></div>
+<div class="rate-card"><div class="rate-label">Prime Rate</div><div class="rate-value" id="primeRate">8.50%</div><div class="rate-change down" id="primeChange">&#9660; -0 bps</div><div class="rate-meta">Fed Target: 5.25-5.50%</div></div>
+<div class="rate-card"><div class="rate-label">10-Yr Treasury</div><div class="rate-value" id="tbillRate">4.28%</div><div class="rate-change up" id="tbillChange">&#9650; +5 bps</div><div class="rate-meta">Yield Curve: <span style="color:#ff4466">Inverted</span></div></div>
+<div style="margin-top:8px"><div class="panel-title">Spread Index</div><div class="stat-row"><span class="stat-label">CRE Spread</span><span class="stat-value">+285 bps</span></div><div class="stat-row"><span class="stat-label">Multifamily</span><span class="stat-value">+195 bps</span></div><div class="stat-row"><span class="stat-label">Industrial</span><span class="stat-value">+215 bps</span></div><div class="stat-row"><span class="stat-label">Office</span><span class="stat-value" style="color:#ff4466">+340 bps</span></div></div>
+</div>
+<div class="main">
+<div class="radial-container" id="radialContainer">
+<svg class="svg-connectors" id="svgConnectors" viewBox="0 0 620 620"></svg>
+<div class="ring-outer"></div>
+<div class="ring-inner"></div>
+<div class="ring-dots" id="ringDots"></div>
+<div class="center-hub" id="centerHub"><div class="hub-bg"></div><div class="hub-text"><div class="hub-label">FLAWLESS<br>AI CORE</div><div class="hub-sub">SYS:ONLINE</div></div></div>
+</div>
+</div>
+<div class="side-panel right" id="rightPanel">
+<div class="panel-title">Pipeline Stats</div>
+<div class="stat-row"><span class="stat-label">Active Deals</span><span class="stat-value" id="activeDeals">47</span></div><div class="stat-bar"><div class="stat-bar-fill" style="width:72%"></div></div>
+<div class="stat-row"><span class="stat-label">In Underwriting</span><span class="stat-value" id="inUw">18</span></div><div class="stat-bar"><div class="stat-bar-fill" style="width:38%"></div></div>
+<div class="stat-row"><span class="stat-label">Funded (MTD)</span><span class="stat-value" id="funded">12</span></div><div class="stat-bar"><div class="stat-bar-fill" style="width:55%"></div></div>
+<div class="stat-row"><span class="stat-label">Pipeline Value</span><span class="stat-value">$284M</span></div>
+<div class="stat-row"><span class="stat-label">Avg Deal Size</span><span class="stat-value">$6.04M</span></div>
+<div class="stat-row"><span class="stat-label">Win Rate</span><span class="stat-value">68%</span></div><div class="stat-bar"><div class="stat-bar-fill" style="width:68%"></div></div>
+<div style="margin-top:12px"><div class="panel-title">AI Engine Status</div><div class="stat-row"><span class="stat-label">Models Online</span><span class="stat-value">7/7</span></div><div class="stat-row"><span class="stat-label">Inference Latency</span><span class="stat-value">42ms</span></div><div class="stat-row"><span class="stat-label">Queue Depth</span><span class="stat-value">3</span></div></div>
+<div style="margin-top:12px"><div class="panel-title">System Alerts</div><div class="alert-item green">Rate lock expiring: Deal #4821 (2h)</div><div class="alert-item">Compliance review needed: 3 docs</div><div class="alert-item green">New lender match: Apex Capital</div></div>
+</div>
+</div>
+<div class="footer"><div>FLAWLESS AI PLATFORM v4.2.0 // COMMERCIAL LOAN BROKER SUITE</div><div class="footer-status"><span class="status-dot"></span><span>ALL SYSTEMS NOMINAL</span></div><div class="footer-clock" id="footerClock">00:00:00 UTC</div></div>
+<div class="modal-overlay" id="modalOverlay"><div class="modal" id="modal"><div class="modal-header"><div class="modal-icon" id="modalIcon"></div><div class="modal-title-block"><div class="modal-title" id="modalTitle"></div><div class="modal-code" id="modalCode"></div></div><button class="modal-close" id="modalClose">&times;</button></div><div class="modal-body" id="modalBody"></div></div></div>
+<script>
+const MENU_ITEMS=[{label:'Loan Programs',subtitle:'Product Engine',code:'SYS::LP-001',icon:'\u26A1',desc:'AI-curated loan product matching engine. Instantly filters 2,400+ commercial loan programs across 300+ lenders based on deal parameters, borrower profile, and market conditions.',features:['Smart product matching with 98.7% accuracy','Real-time rate sheets from 300+ lenders','Auto-generate term sheet comparisons','Bridge, CMBS, SBA, Agency, Portfolio programs','Custom program builder for niche scenarios'],metrics:[{val:'2,400+',label:'Programs'},{val:'300+',label:'Lenders'},{val:'98.7%',label:'Match Rate'}],actions:['Launch Matcher','Browse Programs']},{label:'AI Underwriting',subtitle:'Risk Analysis',code:'SYS::UW-002',icon:'\uD83E\uDDE0',desc:'Neural network-powered underwriting engine that analyzes deal viability in seconds. Processes financial statements, rent rolls, and market data to generate comprehensive risk assessments.',features:['Automated DSCR/LTV/DY calculations','Predictive default probability scoring','Stress test scenarios (200+ variables)','Borrower creditworthiness profiling','Instant pre-qualification decisions'],metrics:[{val:'4.2s',label:'Avg Analysis'},{val:'94%',label:'Accuracy'},{val:'12K+',label:'Deals Scored'}],actions:['New Analysis','View Queue']},{label:'Lender Network',subtitle:'Capital Sources',code:'SYS::LN-003',icon:'\uD83D\uDD17',desc:'Dynamic lender relationship management system. AI-ranked capital sources with real-time appetite indicators, historical performance data, and automated submission workflows.',features:['AI-ranked lender recommendations','Real-time lending appetite indicators','One-click deal submission to multiple lenders','Relationship scoring and history tracking','Automated follow-up sequences'],metrics:[{val:'342',label:'Active Lenders'},{val:'89%',label:'Response Rate'},{val:'4.2d',label:'Avg Close'}],actions:['Find Lenders','Submit Deal']},{label:'Deal Pipeline',subtitle:'Flow Manager',code:'SYS::DP-004',icon:'\uD83D\uDCCA',desc:'End-to-end deal lifecycle management with AI-powered stage progression predictions. Visual pipeline with automated task generation, deadline tracking, and team collaboration tools.',features:['Kanban and timeline pipeline views','AI-predicted close probability per deal','Automated task and deadline generation','Revenue forecasting and commission tracking','Multi-deal comparison dashboard'],metrics:[{val:'47',label:'Active Deals'},{val:'$284M',label:'Pipeline Val'},{val:'68%',label:'Win Rate'}],actions:['View Pipeline','New Deal']},{label:'Property Analysis',subtitle:'Asset Intel',code:'SYS::PA-005',icon:'\uD83C\uDFE2',desc:'Comprehensive property intelligence engine. Aggregates valuation data, comparable sales, environmental reports, and demographic analytics into a single AI-synthesized assessment.',features:['Automated property valuation models','Comparable sales analysis (500mi radius)','Environmental and flood zone screening','Demographic and traffic pattern analytics','NOI optimization recommendations'],metrics:[{val:'18M+',label:'Properties'},{val:'<3s',label:'Report Gen'},{val:'96%',label:'Val Accuracy'}],actions:['Analyze Property','View Reports']},{label:'Compliance & Docs',subtitle:'RegTech Suite',code:'SYS::CD-006',icon:'\uD83D\uDD12',desc:'Automated compliance monitoring and document management system. AI-powered document generation, regulatory checking, and audit trail maintenance for all deal activities.',features:['Auto-generate loan documents and disclosures','Real-time regulatory compliance checking','Digital signature and e-notarization','Secure document vault with versioning','Audit trail and reporting dashboard'],metrics:[{val:'99.9%',label:'Compliance'},{val:'847',label:'Templates'},{val:'256-bit',label:'Encryption'}],actions:['Doc Center','Compliance Check']},{label:'Client Portal',subtitle:'CRM Interface',code:'SYS::CP-007',icon:'\uD83D\uDC64',desc:'White-labeled client management portal with real-time deal status updates, document upload capabilities, and automated communication workflows for borrower engagement.',features:['White-labeled borrower portal','Real-time deal status tracking','Secure document upload and sharing','Automated email and SMS sequences','Client satisfaction scoring'],metrics:[{val:'1,240',label:'Active Clients'},{val:'4.8\u2605',label:'Satisfaction'},{val:'92%',label:'Retention'}],actions:['Open Portal','Add Client']},{label:'Market Intel',subtitle:'Data Analytics',code:'SYS::MI-008',icon:'\uD83D\uDCE1',desc:'Real-time commercial real estate market intelligence platform. AI-aggregated insights from 50+ data sources covering rates, cap rates, transaction volume, and emerging market trends.',features:['Real-time rate and spread monitoring','Cap rate trends by market and asset class','Transaction volume and pricing analytics','AI-generated market outlook reports','Custom alert and watchlist configuration'],metrics:[{val:'50+',label:'Data Sources'},{val:'Live',label:'Updates'},{val:'180',label:'Markets'}],actions:['Market Dashboard','Set Alerts']}];
+const CX=310,CY=310,RADIUS=230;
+const container=document.getElementById('radialContainer');
+const svgEl=document.getElementById('svgConnectors');
+const dotsContainer=document.getElementById('ringDots');
+for(let i=0;i<24;i++){const dot=document.createElement('div');dot.className='ring-dot';const angle=(i/24)*Math.PI*2;const r=240;dot.style.left=(240+r*Math.cos(angle)-1.5)+'px';dot.style.top=(240+r*Math.sin(angle)-1.5)+'px';dotsContainer.appendChild(dot)}
+MENU_ITEMS.forEach((item,i)=>{const angle=(i/8)*Math.PI*2-Math.PI/2;const x=CX+RADIUS*Math.cos(angle);const y=CY+RADIUS*Math.sin(angle);const line=document.createElementNS('http://www.w3.org/2000/svg','line');line.setAttribute('x1',CX);line.setAttribute('y1',CY);line.setAttribute('x2',x);line.setAttribute('y2',y);line.dataset.index=i;svgEl.appendChild(line);const node=document.createElement('div');node.className='menu-node';node.style.left=x+'px';node.style.top=y+'px';node.dataset.index=i;node.innerHTML='<div class="node-icon">'+item.icon+'</div><div class="node-label">'+item.label+'</div><div class="node-sub">'+item.subtitle+'</div><div class="node-code">'+item.code+'</div>';node.addEventListener('mouseenter',()=>{svgEl.querySelector('line[data-index="'+i+'"]').classList.add('active')});node.addEventListener('mouseleave',()=>{svgEl.querySelector('line[data-index="'+i+'"]').classList.remove('active')});node.addEventListener('click',()=>openModal(i));container.appendChild(node)});
+const overlay=document.getElementById('modalOverlay');const modalIcon=document.getElementById('modalIcon');const modalTitle=document.getElementById('modalTitle');const modalCode=document.getElementById('modalCode');const modalBody=document.getElementById('modalBody');
+function openModal(i){const item=MENU_ITEMS[i];modalIcon.textContent=item.icon;modalTitle.textContent=item.label;modalCode.textContent=item.code+' // '+item.subtitle.toUpperCase();let h='<p class="modal-desc">'+item.desc+'</p><div class="modal-metrics">';item.metrics.forEach(m=>{h+='<div class="modal-metric"><div class="modal-metric-val">'+m.val+'</div><div class="modal-metric-label">'+m.label+'</div></div>'});h+='</div><div class="modal-section-title">Core Capabilities</div><ul class="modal-features">';item.features.forEach(f=>{h+='<li>'+f+'</li>'});h+='</ul><div class="modal-actions">';item.actions.forEach((a,idx)=>{h+='<button class="modal-btn '+(idx===0?'primary':'secondary')+'">'+a+'</button>'});h+='</div>';modalBody.innerHTML=h;overlay.classList.add('active')}
+document.getElementById('modalClose').addEventListener('click',()=>{overlay.classList.remove('active')});overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('active')});document.addEventListener('keydown',e=>{if(e.key==='Escape')overlay.classList.remove('active')});
+function updateClock(){const now=new Date();const h=String(now.getUTCHours()).padStart(2,'0');const m=String(now.getUTCMinutes()).padStart(2,'0');const s=String(now.getUTCSeconds()).padStart(2,'0');document.getElementById('footerClock').textContent=h+':'+m+':'+s+' UTC';document.getElementById('sofrTime').textContent=h+':'+m}setInterval(updateClock,1000);updateClock();
+function fluctuateRates(){const sb=5.33,pb=8.50,tb=4.28;const j=()=>(Math.random()-.5)*.04;const sv=sb+j(),pv=pb+j(),tv=tb+j();document.getElementById('sofrRate').textContent=sv.toFixed(2)+'%';document.getElementById('primeRate').textContent=pv.toFixed(2)+'%';document.getElementById('tbillRate').textContent=tv.toFixed(2)+'%';const bps=v=>(v>0?'\u25B2 +':'\u25BC ')+Math.abs(v).toFixed(0)+' bps';const sc=document.getElementById('sofrChange');const d1=Math.round((sv-sb)*100);sc.textContent=bps(d1);sc.className='rate-change '+(d1>=0?'up':'down');const tc=document.getElementById('tbillChange');const d2=Math.round((tv-tb)*100);tc.textContent=bps(d2);tc.className='rate-change '+(d2>=0?'up':'down')}setInterval(fluctuateRates,5000);
+function fluctuateStats(){const b=47;const v=b+Math.floor((Math.random()-.5)*4);document.getElementById('activeDeals').textContent=v;document.getElementById('inUw').textContent=Math.floor(v*.38);document.getElementById('funded').textContent=Math.floor(v*.26)}setInterval(fluctuateStats,8000);
+</script>
+</body>
+</html>
